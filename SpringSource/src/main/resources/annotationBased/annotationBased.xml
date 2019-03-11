@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config></context:annotation-config>
+    <context:component-scan base-package="com.wvkia.Container.AnnotationBasedConfiguration_9"/>
+
+    <!--设置别名和主bean -->
+    <bean class="com.wvkia.Container.AnnotationBasedConfiguration_9.SimpleCatalog" primary="true">
+        <qualifier value="main"/>
+        <property name="value" value="0"/>
+    </bean>
+    <bean class="com.wvkia.Container.AnnotationBasedConfiguration_9.SimpleCatalog">
+        <qualifier value="action"/>
+        <property name="value" value="1"/>
+    </bean>
+</beans>

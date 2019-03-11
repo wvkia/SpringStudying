@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 我们希望产生事务的bean-->
+    <bean id="fooService"
+          class="com.wvkia.DataAccess.TransactionManagement.DeclarativeTransImplement.ExampleDesclaTransaction.DefaultFooService"/>
+
+    <!--配置事务通知 transactional advice-->
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <!--事务配置-->
+        <tx:attributes>
+            <!--以get开头的方法是read-only的-->
+            <tx:method name="get *" read-only="true"/>
+            <!--其他的使用默认-->
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--使用AOP配置，使fooService的方法执行触发上面的通知advice运行-->
+    <aop:config>
+        <aop:pointcut id="fooServiceOperation" expression="execution(* com.wvkia.DataAccess.TransactionManagement.DeclarativeTransImplement.ExampleDesclaTransaction.FooService.*(..))"></aop:pointcut>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="fooServiceOperation"/>
+    </aop:config>
+
+    <!--配置datasource-->
+    <bean id="datasource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://192.168.56.2:3306/test"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+    </bean>
+    <!--配置PlatformTransactionManager的实现-->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="datasource"/>
+    </bean>
+
+</beans>

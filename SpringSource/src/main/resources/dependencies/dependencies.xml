@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 引用注入 -->
+    <bean id="foo" class="com.wvkia.Container.Dependencies_4.dependencies.Foo">
+        <constructor-arg ref="bar"/>
+    </bean>
+    <bean id="bar" class="com.wvkia.Container.Dependencies_4.dependencies.Bar"></bean>
+
+    <!--值注入-->
+    <bean id="exampleBean1" class="com.wvkia.Container.Dependencies_4.dependencies.ExampleBean1">
+
+        <!--可以通过index，还可以通过type-->
+        <constructor-arg index="0" value="123"/>
+        <constructor-arg index="1" value="name"/>
+    </bean>
+
+
+</beans>
