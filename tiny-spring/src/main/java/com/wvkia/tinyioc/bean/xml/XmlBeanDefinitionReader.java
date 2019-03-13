@@ -29,7 +29,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     @Override
     public void loadBeanDefinitions(String location) throws Exception {
         InputStream inputStream = getResourceLoader().getResource(location).getInputStream();
-
+        doLoadBeanDefinitions(inputStream);
     }
 
     //从流从读取bean的定义

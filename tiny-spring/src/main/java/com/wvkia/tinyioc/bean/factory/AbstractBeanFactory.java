@@ -72,4 +72,38 @@ public  abstract class AbstractBeanFactory implements BeanFactory {
     protected void applyPropertyValues(Object bean, BeanDefinition beanDefinition) throws Exception {
 
     }
+
+
+    //注册bean的定义
+    public void registerBeanDefinitino(String name, BeanDefinition beanDefinition) throws Exception {
+        beanDefinitionMap.put(name, beanDefinition);
+        beanDefinitionNames.add(name);
+    }
+
+
+
+    //初始化单例模式
+    public void preInstantiatsSingletons() throws Exception {
+        //将bean的实例给初始化
+        for (String definitionName : beanDefinitionNames) {
+            getBean(definitionName);
+        }
+    }
+    //添加bean的处理动作
+    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
+        this.beanPostProcessors.add(beanPostProcessor);
+    }
+
+    public List getBeansForType(Class type) throws Exception {
+        List beans = new ArrayList();
+        for (String name : beanDefinitionNames) {
+            if (type.isAssignableFrom(beanDefinitionMap.get(name).getBeanClass())) {
+                beans.add(getBean(name));
+            }
+        }
+        return beans;
+    }
+
+
+
 }

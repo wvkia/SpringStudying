@@ -2,6 +2,7 @@ package com.wvkia.tinyioc.bean;
 
 import com.wvkia.tinyioc.bean.io.ResourceLoader;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,6 +22,7 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 
     public AbstractBeanDefinitionReader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
+        this.registry = new HashMap<>();
     }
 
     public Map<String, BeanDefinition> getRegistry() {
