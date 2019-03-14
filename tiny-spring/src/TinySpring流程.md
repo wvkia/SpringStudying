@@ -72,3 +72,7 @@ ApplicationContext继承BeanFactory接口，在BeanFactory的基础上还可以�
 AbstractApplicationContext作为ApplicationContext的缺省适配模式，实现对context上下文的公共方法封装
 
 
+### AOP
+
+AOP分为配置（PointCut，Advice）和织入（Weave）两部分工作，还要将AOP整合到整个容器的生命周期
+

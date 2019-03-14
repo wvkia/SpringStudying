@@ -51,7 +51,7 @@ public  abstract class AbstractBeanFactory implements BeanFactory {
         beanDefinition.setBean(bean);
 
 
-        //对bean的属性进行操作
+        //对bean的属性进行操作，通常是用来注入bean的属性引用的
         applyPropertyValues(bean, beanDefinition);
         return bean;
     }
@@ -68,7 +68,7 @@ public  abstract class AbstractBeanFactory implements BeanFactory {
         return bean;
     }
 
-    //对bean的属性的操作
+    //对bean的属性的操作，通常是用来注入bean的属性引用的
     protected void applyPropertyValues(Object bean, BeanDefinition beanDefinition) throws Exception {
 
     }
