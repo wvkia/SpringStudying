@@ -43,7 +43,7 @@ public  abstract class AbstractBeanFactory implements BeanFactory {
             bean = initializeBean(bean, name);
             beanDefinition.setBean(bean);
         }
-        return null;
+        return bean;
     }
 
     protected Object doCreateBean(BeanDefinition beanDefinition) throws Exception{
@@ -75,7 +75,7 @@ public  abstract class AbstractBeanFactory implements BeanFactory {
 
 
     //注册bean的定义
-    public void registerBeanDefinitino(String name, BeanDefinition beanDefinition) throws Exception {
+    public void registerBeanDefinition(String name, BeanDefinition beanDefinition) throws Exception {
         beanDefinitionMap.put(name, beanDefinition);
         beanDefinitionNames.add(name);
     }
