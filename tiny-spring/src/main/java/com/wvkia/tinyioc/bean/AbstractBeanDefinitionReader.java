@@ -7,6 +7,7 @@ import java.util.Map;
 
 /**
  * 缺省适配模式
+ * 实现 BeanDefinitionReader 接口的抽象类，规范类BeanDefinitionReader的基本结构
  * @author wukai
  * @date 2019/3/11
  */
@@ -16,7 +17,9 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
     private Map<String, BeanDefinition> registry;
 
 
-    //资源加载器
+    /**
+     * 解析BeanDefinition保存到 registry 中
+     */
     private ResourceLoader resourceLoader;
 
 

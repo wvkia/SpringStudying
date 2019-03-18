@@ -3,7 +3,7 @@ package com.wvkia.tinyioc.demo;
 import com.wvkia.tinyioc.bean.BeanDefinition;
 import com.wvkia.tinyioc.bean.factory.AutowireCapableBeanFactory;
 import com.wvkia.tinyioc.bean.factory.BeanFactory;
-import com.wvkia.tinyioc.bean.service.HelloWorldService;
+import com.wvkia.tinyioc.HelloWorldService;
 import org.junit.Test;
 
 /**

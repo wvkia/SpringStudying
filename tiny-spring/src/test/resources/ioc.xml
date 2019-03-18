@@ -3,11 +3,18 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="helloWorldService" class="com.wvkia.tinyioc.bean.service.HelloWorldServiceImpl">
+    <bean id="helloWorldService" class="com.wvkia.tinyioc.HelloWorldServiceImpl">
         <property name="text" value="hello world"/>
         <property name="outputService" ref="outputService"/>
     </bean>
 
-    <bean id="outputService" class="com.wvkia.tinyioc.bean.service.OutputServiceImpl"/>
+    <bean id="outputService" class="com.wvkia.tinyioc.OutputServiceImpl"/>
 
+    <bean id="autoProxyCreator" class="com.wvkia.tinyioc.aop.AspectJAwareAdvisorAutoProxyCreator"/>
+    <bean id="timerInterceptor" class="com.wvkia.tinyioc.aop.TimerInterceptor"/>
+
+    <bean id="aspectjAspect" class="com.wvkia.tinyioc.aop.advisor.AspectJExpressionPointcutAdvisor">
+        <property name="advice" ref="timerInterceptor"/>
+        <property name="expression" value="execution(* com.wvkia.tinyioc.*.*(..))"/>
+    </bean>
 </beans>

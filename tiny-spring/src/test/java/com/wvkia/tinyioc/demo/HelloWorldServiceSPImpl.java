@@ -1,6 +1,6 @@
 package com.wvkia.tinyioc.demo;
 
-import com.wvkia.tinyioc.bean.service.HelloWorldService;
+import com.wvkia.tinyioc.HelloWorldService;
 
 /**
  * @author wukai

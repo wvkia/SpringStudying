@@ -33,8 +33,17 @@ public class ReflectiveMethodInvocation implements MethodInvocation {
         return arguments;
     }
 
+    /**
+     * 调用被拦截对象的方法
+     * @return
+     * @throws Throwable
+     */
     @Override
     public Object proceed() throws Throwable {
+        /**
+         * 这里直接调用target原始对象的方法，如果想要支持拦截器链，可以改为调用嗲里对象的方法 method.invoke(proxy,args)
+         * 在代理对象的InvocationHandler的invoke函数中，查看拦截器列表，如果有拦截器，调用第一个拦截器并返回否则调用原始对象方法
+         */
         return method.invoke(target, arguments);
     }
 

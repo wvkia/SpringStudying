@@ -6,6 +6,9 @@ package com.wvkia.tinyioc.bean;
  * @date 2019/3/11
  */
 public interface BeanDefinitionReader {
-    //从location中加载bean的定义
+    /**
+     * 从location中加载bean的定义
+     */
+
     void loadBeanDefinitions(String location) throws Exception;
 }

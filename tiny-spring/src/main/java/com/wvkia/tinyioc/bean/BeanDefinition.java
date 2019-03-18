@@ -1,9 +1,9 @@
 package com.wvkia.tinyioc.bean;
 
 /**
- * bean的元数据
- * spring的bean从来都不是直接一个object存在map中，需要一些其他的信息
- * 这个就是用来封装bean的类
+ * Bean 在IOC容器的定义，IOC容器可以根据这个定义来生成实例
+ *
+ * 以BeanDefinition发散的类，都是用于解决 Bean 的具体定义问题，包括Bean的名字，类型，属性赋予哪些值或者引用
  * @author wukai
  * @date 2019/3/11
  */
@@ -14,6 +14,9 @@ public class BeanDefinition {
     //bean对应的class
     private Class beanClass;
 
+    /**
+     * bean的名字
+     */
     private String beanClassName;
 
     //bean所有的属性封装的对象

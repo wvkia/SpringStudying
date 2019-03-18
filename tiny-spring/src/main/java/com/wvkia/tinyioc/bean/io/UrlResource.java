@@ -6,7 +6,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 /**
- * Url资源的一个定义
+ * Url资源的一个定义，实现Resource接口，通过Url获取资源
  * @author wukai
  * @date 2019/3/11
  */

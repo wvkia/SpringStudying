@@ -1,9 +1,8 @@
 package com.wvkia.tinyioc.aop;
 
 import com.wvkia.tinyioc.aop.pointcut.AspectJExpressionPointcut;
-import com.wvkia.tinyioc.bean.service.HelloWorldService;
-import com.wvkia.tinyioc.bean.service.HelloWorldServiceImpl;
-import com.wvkia.tinyioc.demo.HelloWorldServiceSPImpl;
+import com.wvkia.tinyioc.HelloWorldService;
+import com.wvkia.tinyioc.HelloWorldServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 

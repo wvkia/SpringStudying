@@ -1,4 +1,4 @@
-package com.wvkia.tinyioc.bean.service;
+package com.wvkia.tinyioc;
 
 /**
  * @author wukai

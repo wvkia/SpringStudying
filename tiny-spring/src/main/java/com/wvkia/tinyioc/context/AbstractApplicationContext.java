@@ -26,12 +26,21 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
         return beanFactory.getBean(name);
     }
 
-    //刷新上下文
+    /**
+     * 用于实现 BeanFactory 的刷新，也就是告诉BeanFactory该使用哪个资源resource加载Bean的定义BeanDefinition，并实例化，初始化bean
+     * @throws Exception
+     */
     public void refresh() throws Exception {
-        //重新加载bean定义
+        //加载bean的定义并保存到beanFactory中
         loadBeanDefinitions(beanFactory);
-        //注册bean处理接口
+        //从BeanFactory中bean的定义中找实现 BeanPostProcessor接口的类（例如：AspectJAwareAdvisorAutoProxyCreator.java）
+        //注册到 AbstractBeanFactory 维护的 BeanPostProcessor列表中
+
+        //后面调用getBean方法通过AspectJAwareAdvisorAutoProxyCreator#postProcessorAfterInitialization()方法调用
+        //getBeansForType方法保证类 PointcutAdvisor 的实例化顺序优于普通的bean
         registerBeanPostProcessors(beanFactory);
+
+        //默认以单例模式实例化所有bean
         onRefresh();
     }
 
@@ -47,6 +56,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
         }
     }
 
+    //单例模式实现bean
     protected void onRefresh() throws Exception {
         beanFactory.preInstantiatsSingletons();
     }

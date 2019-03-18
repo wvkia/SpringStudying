@@ -11,6 +11,9 @@ import java.lang.reflect.Proxy;
  * 基于JDK动态代理实现的切面
  *
  * 实现AbstractAoprpxy代理接口，以及JDK动态代理的InvocationHandler代理处理器
+ *
+ * 有了基本的织入功能
+ * 注意：实现了InvocationHandler
  * @author wukai
  * @date 2019/3/14
  */

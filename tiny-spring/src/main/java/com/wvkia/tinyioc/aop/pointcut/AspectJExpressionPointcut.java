@@ -24,6 +24,7 @@ public class AspectJExpressionPointcut implements Pointcut,ClassFilter,MethodMat
 
 
     private static final Set<PointcutPrimitive> DEFAULT_SUPPORTED_PRIMITIVES = new HashSet<PointcutPrimitive>();
+
     static {
         DEFAULT_SUPPORTED_PRIMITIVES.add(PointcutPrimitive.EXECUTION);
         DEFAULT_SUPPORTED_PRIMITIVES.add(PointcutPrimitive.ARGS);
@@ -68,6 +69,7 @@ public class AspectJExpressionPointcut implements Pointcut,ClassFilter,MethodMat
         } else if (shadowMatch.neverMatches()) {
             return false;
         }
+        //其他情况，见org.springframework.aop.aspect.RuntimeTestWalker
         return false;
     }
 
@@ -80,6 +82,7 @@ public class AspectJExpressionPointcut implements Pointcut,ClassFilter,MethodMat
     public void setExpression(String expression) {
         this.expression = expression;
     }
+
     private PointcutExpression buildPointcutExpression() {
         //解析表达式
         return pointcutParser.parsePointcutExpression(expression);

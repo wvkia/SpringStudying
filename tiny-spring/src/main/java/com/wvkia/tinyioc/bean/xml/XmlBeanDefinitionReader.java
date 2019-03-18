@@ -16,7 +16,7 @@ import java.io.InputStream;
 
 /**
  * BeanDefinitionReader的一个实现
- * 从xml文件中读取bean
+ * 从xml文件中读取bean的定义
  * @author wukai
  * @date 2019/3/11
  */
@@ -68,15 +68,24 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         }
     }
 
-    //解析单个element
+    /**
+     * 处理bean标签
+     * @param element
+     */
     protected void processBeanDefinition(Element element) {
+        //获取bean属性为id的值作为bean的name
         String name = element.getAttribute("id");
+        //获取bean属性为class值作为bean的class
         String className = element.getAttribute("class");
         BeanDefinition beanDefinition = new BeanDefinition();
+
+        //解析property属性
         processProperty(element, beanDefinition);
+
+        //设置className的同时，在内部设置class
         beanDefinition.setBeanClassName(className);
 
-        //将bean的定义放到map中
+        //注册类定义，将bean的定义放到map中
         getRegistry().put(name, beanDefinition);
     }
 

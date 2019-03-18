@@ -13,9 +13,10 @@ public class TargetSource {
 
     private Class<?>[] interfaces;
 
+    //原始对象
     private Object target;
 
-    public TargetSource(Object target,Class<?> targetClass, Class<?>[] interfaces) {
+    public TargetSource(Object target,Class<?> targetClass, Class<?>... interfaces) {
         this.targetClass = targetClass;
         this.interfaces = interfaces;
         this.target = target;

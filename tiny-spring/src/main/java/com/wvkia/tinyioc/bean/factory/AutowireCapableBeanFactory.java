@@ -15,7 +15,12 @@ import java.lang.reflect.Method;
  */
 public class AutowireCapableBeanFactory extends AbstractBeanFactory {
 
-    //对bean的属性的操作
+    /**
+     * 通过反射自动装配所有属性
+     * @param bean
+     * @param mbd
+     * @throws Exception
+     */
     @Override
     protected void applyPropertyValues(Object bean, BeanDefinition mbd) throws Exception {
         //如果这个bean继承了BeanFactoryAwaire的接口，就将BeanFactory注入进去

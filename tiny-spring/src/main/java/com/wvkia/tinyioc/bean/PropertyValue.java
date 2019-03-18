@@ -10,7 +10,9 @@ public class PropertyValue {
     //bean需要注入的引用bena名称
     private final String name;
 
-    //bean中需要注入的引用bean
+    /**
+     * Spring xml中property中，键是key，值是value或者ref，对于value只要直接注入属性就可以，对于ref需要解析对应的bean
+     */
     private final Object value;
 
     public PropertyValue(String name, Object value) {
