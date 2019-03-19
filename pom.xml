@@ -11,6 +11,7 @@
     <modules>
         <module>SpringSource</module>
         <module>tiny-spring</module>
+        <module>springCode</module>
     </modules>
 
 

@@ -5,59 +5,6 @@ bean目录下分为三个子目录和部分类
 
 
 
-### AOP
-
-AOP分为配置（PointCut，Advice）和织入（Weave）两部分工作，还要将AOP整合到整个容器的生命周期
-
-织入(weave)，Spring Aop的织入点是AopProxy，它包含一个方法``Object getProxy()``来获取代理后的对象。
-
-org.aop的MethodInterceptor和MethodInvocation对应的是AOP联盟的标准，对应AOP的基本角色：Advice和Joinpoint。
-Advice定义了在切点指定的逻辑，而Joinpoint定义了切点。
-
-被代理对象使用``TargetSource``封装，而``AdvisedSupport``就是保存TargetSource和MethodInterceptor的元数据对象。
-```java
-
-public void test(){
-    
-    //helloWorldService without AOP
-    
-}
-
-```
-
-
-如何确定一个切点表达式对什么类以及什么方法进行AOP？
-我们需要使用Pointcut的定义来确定。Pointcut包含两个角色：ClassFilter和MethodMatcher，分别对类和方法进行匹配。
-
-AOP使用pointcut进行切面定位，使用weave技术将AOP整合到容器，如何结合到Spring中？
-Spring使用Bean的BeanPostProcessor，也就是后置处理
-
-BeanPostProcessor是BeanFactory提供的，在Bean初始化过程中进行扩展的接口。只有Bean实现类BeanPostProcessor接口，SPring在bean初始化时就会调用这个接口，实现对BeanFactory
-核心无侵入的扩展。
-
-我们的AOP是怎么实现的呢？在AOP的xml配置中，有这么一句话 ``<aop:aspectj-autoproxy>``，相当于
-```xml
-<bean id="autoProxyCreator" class="org.springframework.aop.aspectj.autoproxy.AspectJAwareAdvisorAutoProxyCreator"></bean>
-```
-
-``AspectJAwareAdvisorAutoProxyCreator``就是AspectJ方式实现织入的核心。其实是一个BeanPostProcessor，会扫描所有的Pointcut，并对bean进行织入
-
-我们自己实现了AspectJAwareAdvisorAutoProxyCreator,然后直接使用bean的方式
-
-```xml
-
-<bean id ='autoProxyCreator' class="com.wvkia.tinyioc.aop.AspectJAwareAdvisorAutoProxyCreator"></bean>
-
-<!--实现一个切面定义-->
-<bean id="timeInterceptor" class="com.wvkia.tinyioc.aop.TimerInterceptor"></bean>
-<!--将一个切面advice注入，并结合expression表达式-->
-
-<bean id="aspectjAspect" class="com.wvkia.tinyioc.aop.advisor.AspectJExpressionPointcutAdvisor"> 
-    <property name="advice" ref="timeInterceptor"></property>
-    <property name="expression" value="execution(* com.wvkia.tinyioc.*.*(..))"></property>
-</bean>
-```
-
 
 ### 具体流程
 
@@ -439,3 +386,242 @@ helloService.hello();
 
 ### AOP流程
 
+
+AOP分为配置（PointCut，Advice）和织入（Weave）两部分工作，还要将AOP整合到整个容器的生命周期
+
+织入(weave)，Spring Aop的织入点是AopProxy，它包含一个方法``Object getProxy()``来获取代理后的对象。
+
+org.aop的MethodInterceptor和MethodInvocation对应的是AOP联盟的标准，对应AOP的基本角色：Advice和Joinpoint。
+Advice定义了在切点指定的逻辑，而Joinpoint定义了切点。
+```java
+public interface MethodInterceptor extends Interceptor {
+	
+    Object invoke(MethodInvocation invocation) throws Throwable;
+}
+```
+
+
+#### AOP的标准
+我们先看一下标准AOP接口，org.aopalliaence定义了AOP的标准
+在org.aopalliance包下有两个包aop和intercept，aop中包括Advice接口和AspectException异常，
+其中Advice定义了切面的接口，切面必须实现该接口，例如拦截器Interceptors
+
+而intercept定义不同的拦截接口
+![](./img/orgaop.png)
+
+
+Advice ： AOP的标识接口，通知和Interceptor顶级类，各种通知类型都需要实现这个接口
+Interceptor: 方法拦截的标识接口，Advice的子类
+MethodInterceptor: 方法拦截器，主要方法Invoke，入参MethodInvocation
+ConstructorInterceptor：构造器拦截器
+Joinpoint : 连接点类，主要方法: proceed()执行下一个拦截器，getThis获取目标对象
+Invocation: AOP拦截的执行类，Joinpoint子类，getArguments获取参数
+MethodInvocation: Invocation实现类，真正执行AOP方法的拦截，getMethod()获取目标方法
+ConstructorInvocation: 构造方法实现类，getConstructor()返回构造方法
+
+可以看出Jointpoint为切点的上层接口,Invocation调用，MethodInvocation是对方法的拦截调用、ConstrcutorInvocation是对
+构造器的拦截调用，Interceptor继承Advice切面接口，表示拦截器，MethodInterceptor拦截住方法，
+ConstrcutorInterceptor拦截构造器
+
+
+而拦截器会使用调用器作为拦截之后的处理
+例如
+```java
+public interface MethodInterceptor extends Interceptor {
+    //使用调用器作为参数
+    Object invoke(MethodInvocation invocation) throws Throwable;
+}
+
+```
+而MethodInvocation主要是用来拿到被切面的方法,拿到method之后就可以获取被切面的方法的信息
+```java
+public interface MethodInvocation extends Invocation{
+    Method getMethod();
+}
+```
+我们在使用org.aop的标准时，往往是先
+1. 创建一个拦截器，实现MethodInterceptor或者ConstructorInterceptor，实现对方法或构造器的拦截
+2. 
+
+#### AOP
+
+被代理对象使用``TargetSource``封装，而``AdvisedSupport``就是保存TargetSource和MethodInterceptor的元数据对象。
+
+
+
+如何确定一个切点表达式对什么类以及什么方法进行AOP？
+我们需要使用Pointcut的定义来确定。Pointcut包含两个角色：ClassFilter和MethodMatcher，分别对类和方法进行匹配。
+
+AOP使用pointcut进行切面定位，使用weave技术将AOP整合到容器，如何结合到Spring中？
+Spring使用Bean的BeanPostProcessor，也就是后置处理
+
+BeanPostProcessor是BeanFactory提供的，在Bean初始化过程中进行扩展的接口。只有Bean实现类BeanPostProcessor接口，SPring在bean初始化时就会调用这个接口，实现对BeanFactory
+核心无侵入的扩展。
+
+我们的AOP是怎么实现的呢？在AOP的xml配置中，有这么一句话 ``<aop:aspectj-autoproxy>``，相当于
+```xml
+<bean id="autoProxyCreator" class="org.springframework.aop.aspectj.autoproxy.AspectJAwareAdvisorAutoProxyCreator"></bean>
+```
+
+``AspectJAwareAdvisorAutoProxyCreator``就是AspectJ方式实现织入的核心。其实是一个BeanPostProcessor，会扫描所有的Pointcut，并对bean进行织入
+
+我们自己实现了AspectJAwareAdvisorAutoProxyCreator,然后直接使用bean的方式
+
+```xml
+
+<bean id ='autoProxyCreator' class="com.wvkia.tinyioc.aop.AspectJAwareAdvisorAutoProxyCreator"></bean>
+
+<!--实现一个切面定义-->
+<bean id="timeInterceptor" class="com.wvkia.tinyioc.aop.TimerInterceptor"></bean>
+<!--将一个切面advice注入，并结合expression表达式-->
+
+<bean id="aspectjAspect" class="com.wvkia.tinyioc.aop.advisor.AspectJExpressionPointcutAdvisor"> 
+    <property name="advice" ref="timeInterceptor"></property>
+    <property name="expression" value="execution(* com.wvkia.tinyioc.*.*(..))"></property>
+</bean>
+```
+
+
+
+AOP下属 advisor、pointcut、proxy三个包以及辅助类
+
+
+先看辅助类
+TargetSource封装被代理对象的数据，也就是保存原对象的信息
+```java
+public class TargetSource {
+
+    private Class<?> targetClass;
+
+    private Class<?>[] interfaces;
+
+    //原始对象
+    private Object target;
+}
+```
+
+ReflectiveMethodInvocation JDK动态代理处理类
+
+AspectJAwareAdvisorAutoProxyCreator也就是启用AOP时发挥作用的类，这个类实现了BeanPostProcessor和BeanFactoryAware，
+然后在BeanPostProcessor后置处理中对所有的代理对象进行拦截，并且生成代理对象，并返回作为bean
+
+
+
+##### advisor
+advisor包用于声明通知器，就是在aop时通知对应的类做什么动作，其实就是一个整合了Advice和Pointcut的类
+![](./img/advisor.png)
+
+在使用时，我们需要将切面Advice和Pointcut传给它，然后AspectJAwareAdvisorAutoProxyCreator会扫描所有的PointcutAdvisor实现类，然后
+对其进行代理
+```xml
+<bean id="aspectjAspect" class="com.wvkia.tinyioc.aop.advisor.AspectJExpressionPointcutAdvisor">
+        <property name="advice" ref="timerInterceptor"/>
+        <property name="expression" value="execution(* com.wvkia.tinyioc.*.*(..))"/>
+    </bean>
+```
+
+
+##### pointcut
+pointcut用于声明切点，也就是切点，确定是对什么类的什么方法进行AOP（就是确定在哪切）
+![](./img/pointcut.png)
+
+其中ClassFilter、MethodMatcher分别是类匹配器（筛选要代理的目标对象）和方法匹配器（筛选要代理的方法）
+```java
+/**
+ * 切点，确定是对什么类的什么方法进行AOP（就是确定在哪切）
+ */
+public interface Pointcut {
+
+    /**
+     * 获取 ClasFilter，类名匹配（筛选要代理的目标对象）
+     * @return
+     */
+    ClassFilter getClassFilter();
+    
+
+    /**
+     * 获取一个MethodMatcher对象
+     * @return
+     */
+    MethodMatcher getMethodMatcher();
+}
+public interface ClassFilter {
+
+    /**
+     * 用于匹配targetClass是否是要拦截的类
+     * @param targetClass
+     * @return
+     */
+    boolean matches(Class targetClass);
+}
+public interface MethodMatcher {
+
+    /**
+     * 匹配该方法是否是要拦截的方法
+     * @param method
+     * @param targetClass
+     * @return
+     */
+    boolean matches(Method method, Class targetClass);
+}
+
+```
+
+而AspectJExpressionPointcut是对Pointcut的实现，具体是通过一个表达式来确定需要AOP的类和方法
+
+
+##### proxy
+proxy包用于代理工厂
+
+AopProxy标志性接口，暴露获取aop代理对象接口
+
+```java
+public interface AopProxy {
+
+    /**
+     * 获取代理对象
+     * @return
+     */
+    Object getProxy();
+}
+
+```
+AbstractAopProxy继承AOP的接口，使用AdviceSupport的支持
+
+```java
+public abstract class AbstractAopProxy implements AopProxy {
+
+    protected AdvisedSupport advised;
+
+    public AbstractAopProxy(AdvisedSupport advised) {
+        this.advised = advised;
+    }
+}
+```
+AdvicedSupport代理相关的元数据，封装了TargetSource（要拦截的实际对象）、MethodInterceptor（方法拦截器，实现AOP接口，也即是拦截之后的动作）和MethodMatcher（方法匹配器）
+
+
+Cglib2AopProxy和JdkDynamicAopPorxy分别是生成代理对象的Cglib实现和JDK动态代理实现
+
+ProxyFactory 代理工厂模式
+```java
+public class ProxyFactory extends AdvisedSupport implements AopProxy {
+
+
+    @Override
+    public Object getProxy() {
+        return createAopProxy().getProxy();
+    }
+
+    protected final AopProxy createAopProxy() {
+        return new JdkDynamicAopProxy(this);
+    }
+}
+
+```
+
+全部流程
+
+
+
+1. 首先创建一个
