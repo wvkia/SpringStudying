@@ -1,4 +1,4 @@
-package com.wvkia.tinyioc.bean.xml;
+package com.wvkia.tinyioc.bean;
 
 import com.wvkia.tinyioc.BeanReference;
 import com.wvkia.tinyioc.bean.AbstractBeanDefinitionReader;

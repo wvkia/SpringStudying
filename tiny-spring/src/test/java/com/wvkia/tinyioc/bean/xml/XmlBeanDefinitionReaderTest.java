@@ -1,13 +1,12 @@
 package com.wvkia.tinyioc.bean.xml;
 
 import com.wvkia.tinyioc.bean.BeanDefinition;
+import com.wvkia.tinyioc.bean.XmlBeanDefinitionReader;
 import com.wvkia.tinyioc.bean.io.ResourceLoader;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Map;
-
-import static org.junit.Assert.*;
 
 /**
  * @author wukai

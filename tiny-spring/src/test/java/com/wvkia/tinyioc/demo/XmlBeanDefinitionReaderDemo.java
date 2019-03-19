@@ -5,7 +5,7 @@ import com.wvkia.tinyioc.bean.factory.AutowireCapableBeanFactory;
 import com.wvkia.tinyioc.bean.factory.BeanFactory;
 import com.wvkia.tinyioc.bean.io.ResourceLoader;
 import com.wvkia.tinyioc.HelloWorldService;
-import com.wvkia.tinyioc.bean.xml.XmlBeanDefinitionReader;
+import com.wvkia.tinyioc.bean.XmlBeanDefinitionReader;
 import org.junit.Test;
 
 import java.util.Map;

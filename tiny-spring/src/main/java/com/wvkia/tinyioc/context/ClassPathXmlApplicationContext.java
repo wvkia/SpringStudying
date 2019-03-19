@@ -4,7 +4,7 @@ import com.wvkia.tinyioc.bean.BeanDefinition;
 import com.wvkia.tinyioc.bean.factory.AbstractBeanFactory;
 import com.wvkia.tinyioc.bean.factory.AutowireCapableBeanFactory;
 import com.wvkia.tinyioc.bean.io.ResourceLoader;
-import com.wvkia.tinyioc.bean.xml.XmlBeanDefinitionReader;
+import com.wvkia.tinyioc.bean.XmlBeanDefinitionReader;
 
 import java.util.Map;
 

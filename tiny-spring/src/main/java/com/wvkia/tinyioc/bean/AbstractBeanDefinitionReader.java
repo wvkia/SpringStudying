@@ -11,7 +11,7 @@ import java.util.Map;
  * @author wukai
  * @date 2019/3/11
  */
-public abstract class AbstractBeanDefinitionReader implements BeanDefinitionReader {
+public abstract class AbstractBeanDefinitionReader extends ResourceLoader implements BeanDefinitionReader {
 
     //Bean的注册存储
     private Map<String, BeanDefinition> registry;
