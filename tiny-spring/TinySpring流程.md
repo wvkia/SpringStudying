@@ -124,3 +124,36 @@ BeanPostProcessor是BeanFactory提供的，在Bean初始化过程中进行扩展
     <property name="expression" value="execution(* com.wvkia.tinyioc.*.*(..))"></property>
 </bean>
 ```
+
+
+### 具体流程
+
+bean包下有factory、io、xml三个包以及其他类，
+其中factory包主要包含BeanFactory的相关类
+
+BeanFactory接口是IOC的bean容器，工厂模式提供获取的getBean
+
+AbstractBeanFactory缺省适配模式，抽象类实现BeanFactory接口，并且包含一系列方法规范IOC容器的基本结构
+
+```java
+
+//三个实例域
+ /**
+     * 对象池，根据name作为key存储对应的bean的定义
+     */
+    private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>();
+
+
+    /**
+     * 保存完成注册的bean的name
+     */
+    private final List<String> beanDefinitionNames = new ArrayList<String>();
+
+    /**
+     * 增加bean的处理程序
+     */
+    private List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
+
+
+
+```

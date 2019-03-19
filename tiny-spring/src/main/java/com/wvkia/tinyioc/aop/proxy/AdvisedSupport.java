@@ -15,7 +15,7 @@ public class AdvisedSupport {
     // 要拦截的对象
     private TargetSource targetSource;
 
-    //方法拦截器，实现AOP接口
+    //方法拦截器，实现AOP接口,也就是拦截之后需要做的动作
     private MethodInterceptor methodInterceptor;
 
     // 方法匹配器，判断是否是需要拦截的方法

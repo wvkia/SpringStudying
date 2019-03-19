@@ -61,7 +61,7 @@ public class AspectJExpressionPointcut implements Pointcut,ClassFilter,MethodMat
         checkReadyToMatch();
 
         //检测pointcut是否满足给定的切面
-        ShadowMatch shadowMatch = pointcutExpression.matchesAdviceExecution(method);
+        ShadowMatch shadowMatch = pointcutExpression.matchesMethodExecution(method);
 
         //总是满足
         if (shadowMatch.alwaysMatches()) {

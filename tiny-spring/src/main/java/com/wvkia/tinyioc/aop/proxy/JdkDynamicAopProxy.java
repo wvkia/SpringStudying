@@ -28,9 +28,18 @@ public class JdkDynamicAopProxy extends AbstractAopProxy implements InvocationHa
         return Proxy.newProxyInstance(getClass().getClassLoader(), advised.getTargetSource().getInterfaces(), this);
     }
 
+    /**
+     * jdk动态代理调用处理器
+     * @param proxy
+     * @param method
+     * @param args
+     * @return
+     * @throws Throwable
+     */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         //获取方法切面包装类
+        //也就是对方法对切面处理，需要做的动作
         MethodInterceptor methodInterceptor = advised.getMethodInterceptor();
 
         //如果存在方法检测适配类型，就检测一下对不对

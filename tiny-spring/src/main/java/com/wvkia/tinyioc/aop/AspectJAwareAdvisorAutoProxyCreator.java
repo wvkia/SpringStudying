@@ -18,6 +18,7 @@ import java.util.List;
 public class AspectJAwareAdvisorAutoProxyCreator implements BeanPostProcessor,BeanFactoryAware {
 
     private AbstractBeanFactory beanFactory;
+
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws Exception {
         this.beanFactory = (AbstractBeanFactory) beanFactory;
