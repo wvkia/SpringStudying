@@ -424,6 +424,12 @@ ConstructorInvocation: 构造方法实现类，getConstructor()返回构造方�
 ConstrcutorInterceptor拦截构造器
 
 
+接口分为两种：JoinPoint或Interceptor(继承至Advice)
+JoinPoint: 为运行时连接点，子接口是Invocation，就是对Field、Method、Constructor的调用事件
+Interceptor：拦截器，根据传入的连接点进行拦截，通过JoinPoint的proceed()方法执行
+
+即将连接点JoinPoint传给对应的拦截器Interceptor拦截，并且在拦截前后做处理，AOP不会改动原来的代码，而是通过拦截的方式插入其他处理
+
 而拦截器会使用调用器作为拦截之后的处理
 例如
 ```java
@@ -439,10 +445,24 @@ public interface MethodInvocation extends Invocation{
     Method getMethod();
 }
 ```
+
 我们在使用org.aop的标准时，往往是先
 1. 创建一个拦截器，实现MethodInterceptor或者ConstructorInterceptor，实现对方法或构造器的拦截
-2. 
+2. 创建一个调用器，实现MethodInvocation，然后将这个MethodInvocation注入到Interceptor中,而拦截器会执行MethodInvocation的invoke来执行自己的invoke
 
+
+#### 概念
+
+Joinpoint连接点：程序执行的某个特定位置
+Pointcut切点：相当于查询连接点的查询条件，一个切点可以匹配多个连接点
+Advice增强：织入到连接点的一段代码，对原先逻辑的增强
+Introduction引介：特殊的增强，可以给类添加属性和方法
+Weaving织入：将增强Advice添加到目标类连接点Joinpoint的过程
+    1. 编译期织入：AspectJ
+    2. 装载期织入：特殊类加载器对类进行增强
+    3. 运行期织入：JDK动态代理
+   
+Aspect切面：切点Pointcut和
 #### AOP
 
 被代理对象使用``TargetSource``封装，而``AdvisedSupport``就是保存TargetSource和MethodInterceptor的元数据对象。
