@@ -5,4 +5,7 @@
     <!--  默认-->
     <bean id="helloService" class="com.wvkia.springCode.service.impl.HelloServiceImpl"></bean>
 
+
+    <!--factoryBean model测试-->
+    <bean id="factoryBeanModel" class="com.wvkia.springCode.extra.MyFactoryBean"/>
 </beans>
