@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="nameModel" class="com.wvkia.simpleSpring.model.NameModel">
+        <property name="firstName" value="first1"/>
+        <property name="lastName" value="last1"/>
+    </bean>
+
+    <bean id="userModel" class="com.wvkia.simpleSpring.model.UserModel">
+        <property name="id" value="id0"/>
+        <property name="name" ref="nameModel"/>
+
+    </bean>
+
+</beans>
